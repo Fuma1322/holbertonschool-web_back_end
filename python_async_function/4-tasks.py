@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-''' async and await syntax '''
-import asyncio
+"""  alter it into a new function task_wait_n.
+The code is nearly identical to wait_n except
+task_wait_random is being called """
+
 from typing import List
+task_wait_n = __import__('1-concurrent_coroutines').wait_n
 
-get = __import__('3-tasks').task_wait_random
 
-
-async def task_wait_n(n: int, max_delay: int) -> List[float]:
-    ''' Function that returns a list
-    '''
-    l = [get(max_delay) for i in range(n)]
-    finish = [await task for task in asyncio.as_completed(l)]
-    return finish
+async def wait_n(n: int, max_delay: int) -> List[float]:
+    """return the list of all the delays"""
+    delays = []
+    for i in range(n):
+        delay = await task_wait_random(max_delay)
+        delays.append(delay)
+        delays = sorted(delays)
+    return delays
